@@ -3,13 +3,11 @@
 Cell::Cell()
 {
     visited = false;
-    // 0 - top neighbour
-    // 1 - right neighbour
-    // 2 - bottom neighbour
-    // 3 - left neighbour
+
     for(int i = 0; i < NEIGHBOURS_COUNT; i++){
         neighbours.push_back(nullptr);
     }
+
     for(int i = 0; i < NEIGHBOURS_COUNT; i++){
         walls.push_back(true);
     }
@@ -28,11 +26,17 @@ void Cell::setVisited(bool value)
 
 bool Cell::hasUnvisitedNeighbours(){
     for(int i = 0; i < NEIGHBOURS_COUNT; i++){
-        if(neighbours[i] != nullptr && !neighbours[i]->isVisited()){
+        if(neighbours[i] != nullptr && !neighbours[i]->visited){
             return true;
         }
     }
     return false;
+}
+
+void Cell::setNeighbours(std::vector<Cell*> _neighbours){
+    for(int i = 0; i < NEIGHBOURS_COUNT; i++){
+        neighbours[i] = _neighbours[i];
+    }
 }
 
 std::vector<std::pair<int, Cell*> > Cell::getUnvisitedNeighbours(){
@@ -45,41 +49,54 @@ std::vector<std::pair<int, Cell*> > Cell::getUnvisitedNeighbours(){
     return unvisitedNeighbours;
 }
 
+std::pair<int, Cell*> Cell::getRandomTopOrLeftNeighbour(){
+    std::vector<std::pair<int, Cell*> > neededNeighbours;
+    if(neighbours[TOP] != nullptr){
+        neededNeighbours.emplace_back(TOP, neighbours[TOP]);
+    }
+    if(neighbours[LEFT] != nullptr){
+        neededNeighbours.emplace_back(LEFT, neighbours[LEFT]);
+    }
+    if(!neededNeighbours.empty()){
+        int index = std::rand() % neededNeighbours.size();
+        return neededNeighbours[index];
+    } else {
+        return std::pair<int, Cell*>(-1, nullptr);
+    }
+}
+
 std::pair<int, Cell*> Cell::getRandomUnvisitedNeighbour(){
     std::vector<std::pair<int, Cell*> > unvisitedNeighbours = getUnvisitedNeighbours();
     int index = std::rand() % unvisitedNeighbours.size();
     return unvisitedNeighbours[index];
 }
 
-void Cell::setNeighbours(std::vector<Cell*> _neighbours){
-    for(int i = 0; i < NEIGHBOURS_COUNT; i++){
-        neighbours[i] = _neighbours[i];
-    }
-}
-
 void Cell::removeWall(std::pair<int, Cell*> neighbour){
-    int index = neighbour.first;
-    int neighbourIndex;
-    switch (index) {
+    int wallToBreakFromCurrentCell = neighbour.first;
+    int wallToBreakFromNeighbour;
+
+    switch (wallToBreakFromCurrentCell) {
         case TOP:
-            neighbourIndex = BOTTOM;
+            wallToBreakFromNeighbour = BOTTOM;
             break;
         case RIGHT:
-            neighbourIndex = LEFT;
+            wallToBreakFromNeighbour = LEFT;
             break;
         case BOTTOM:
-            neighbourIndex = TOP;
+            wallToBreakFromNeighbour = TOP;
             break;
         case LEFT:
-            neighbourIndex = RIGHT;
+            wallToBreakFromNeighbour = RIGHT;
             break;
     }
-    walls[index] = false;
-    if(neighbour.second != nullptr){
-        (neighbour.second->walls)[neighbourIndex] =false;
-    }
-}
 
+    walls[wallToBreakFromCurrentCell] = false;
+
+    if(neighbour.second != nullptr){
+        (neighbour.second->walls)[wallToBreakFromNeighbour] = false;
+    }
+
+}
 
 std::vector<bool> Cell::getWalls(){
     return walls;

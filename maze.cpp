@@ -1,5 +1,12 @@
 #include "maze.h"
 
+Maze::Maze()
+{
+    rows = 0;
+    columns = 0;
+    cells = nullptr;
+}
+
 Maze::Maze(int _rows, int _columns)
 {
     srand(time(nullptr));
@@ -77,7 +84,7 @@ void Maze::setNeighbours(){
     }
 }
 
-void Maze::generateMaze(){
+void Maze::depthFirstSearch(){
     int row = rand() % rows;
     int column = rand() % columns;
     Cell *current = &cells[row][column];
@@ -98,13 +105,29 @@ void Maze::generateMaze(){
     }
 }
 
+void Maze::binaryTree(){
+    for(int i = 0; i < rows; i++){
+        for(int j = 0; j < columns; j++){
+            Cell *current = &cells[i][j];
+            if(current->getRandomTopOrLeftNeighbour().second == nullptr){
+                continue;
+            } else {
+                std::pair<int, Cell*> newCell = current->getRandomTopOrLeftNeighbour();
+                current->removeWall(newCell);
+            }
+        }
+    }
+}
+
 int** Maze::generateGrid(){
     int newRows = 2*rows + 1;
     int newColumns = 2*columns + 1;
+
     grid = new int*[newRows];
     for(int i = 0; i < newRows; i++){
         grid[i] = new int[newColumns];
     }
+
     for(int i = 0; i < newRows; i++){
         for(int j = 0; j < newColumns; j++){
             grid[i][j] = 0;
@@ -115,22 +138,41 @@ int** Maze::generateGrid(){
         for(int j = 0; j < columns; j++){
             grid[2*i+1][2*j+1] = 1;
 
+            // destroy the top wall if needed
             if(!cells[i][j].getWalls()[Cell::TOP]){
                 grid[2*i][2*j+1] = 1;
             }
 
+            // destroy the right wall if needed
             if(!cells[i][j].getWalls()[Cell::RIGHT]){
                 grid[2*i+1][2*j+2] = 1;
             }
 
+            // destroy the bottom wall if needed
             if(!cells[i][j].getWalls()[Cell::BOTTOM]){
                 grid[2*i+2][2*j+1] = 1;
             }
 
+            // destroy the left wall if needed
             if(!cells[i][j].getWalls()[Cell::LEFT]){
                 grid[2*i+1][2*j] = 1;
             }
         }
     }
+
     return grid;
+}
+
+int** Maze::generateMaze(int difficulty){
+    switch (difficulty) {
+    case LOW:{
+        binaryTree();
+        break;
+    }
+    case MEDIUM:
+    case HIGH: {
+        depthFirstSearch();
+    }
+    }
+    return generateGrid();
 }

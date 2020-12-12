@@ -10,17 +10,21 @@
 class Maze
 {
 public:
+    Maze();
     Maze(int _rows, int _columns);
-    void setNeighbours();
-    void generateMaze();
+    void depthFirstSearch();
+    void binaryTree();
     int** generateGrid();
+    int **generateMaze(int difficulty);
 private:
-    std::stack<Cell*> cellsStack;
-    Cell **cells;
+    enum {LOW, MEDIUM, HIGH};
     int **grid;
     int rows;
     int columns;
+    Cell **cells;
     int cellsToVisit;
+    std::stack<Cell*> cellsStack;
+    void setNeighbours();
 };
 
 #endif // MAZE_H
