@@ -2,6 +2,8 @@
 #include "ui_mainwindow.h"
 
 #include <QPushButton>
+#include <QKeyEvent>
+#include <QMessageBox>
 
 QString MainWindow::gradients[COUNT] = {"background-color: qlineargradient(spread:pad, x1:0.507, y1:1, x2:0.498, y2:0, stop:0 rgba(161, 140, 209, 255), stop:1 rgba(251, 194, 235, 255));",
                                         "background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(79, 172, 254, 255), stop:1 rgba(0, 242, 254, 255));",
@@ -151,7 +153,7 @@ void MainWindow::displayMaze(){
     delete layout;
     mazeGrid = new QLabel**[2 * size + 1];
     QPixmap pass("://img/pass.png");
-    QPixmap enter("://img/enter.png");
+    QPixmap exit("://img/cheese.png");
     for(int i =0; i<2 * size +1; i++){
         mazeGrid[i] = new QLabel*[2 * size +1];
     }
@@ -172,8 +174,62 @@ void MainWindow::displayMaze(){
             gridLayout->addWidget(mazeGrid[i][j], i, j);
         }
     }
-    mazeGrid[1][0]->setPixmap(enter);
-    mazeGrid[2*size-1][2*size]->setPixmap(enter);
+    QPixmap hamster("://img/hamster.png");
+    currentRow = 1;
+    currentColumn = 0;
     centralWidget()->setFixedSize(1000, 800);
+    mazeGrid[1][0]->setPixmap(hamster.scaled(1000/gridLayout->columnCount(), 1000/gridLayout->columnCount(), Qt::IgnoreAspectRatio));
+    mazeGrid[2*size-1][2*size]->setPixmap(exit.scaled(1000/gridLayout->columnCount(), 1000/gridLayout->columnCount(), Qt::IgnoreAspectRatio));
     centralWidget()->setLayout(gridLayout);
+}
+
+void MainWindow::keyPressEvent(QKeyEvent *event) {
+    QPixmap hamster("://img/hamster.png");
+    QPixmap pass("://img/pass.png");
+    Qt::Key keyPressed = (Qt::Key)event->key();
+    QLabel *next = nullptr;
+    QLabel *current = mazeGrid[currentRow][currentColumn];
+
+    if(keyPressed == Qt::Key_W){
+        if(currentRow - 1 > 0){
+            if(mazeMatrix[currentRow - 1][currentColumn] == 1){
+                next = mazeGrid[currentRow - 1][currentColumn];
+                currentRow -= 1;
+            }
+        }
+    }
+    if(keyPressed == Qt::Key_A){
+        if(currentColumn - 1 > 0){
+            if(mazeMatrix[currentRow][currentColumn - 1] == 1){
+                next = mazeGrid[currentRow][currentColumn - 1];
+                currentColumn -= 1;
+            }
+        }
+    }
+    if(keyPressed == Qt::Key_S){
+        if(currentRow + 1 < 2*size + 1){
+            if(mazeMatrix[currentRow + 1][currentColumn] == 1){
+                next = mazeGrid[currentRow + 1][currentColumn];
+                currentRow += 1;
+            }
+        }
+    }
+    if(keyPressed == Qt::Key_D){
+        if(currentColumn + 1 < 2*size+1){
+            if(mazeMatrix[currentRow][currentColumn + 1] == 1){
+                next = mazeGrid[currentRow][currentColumn + 1];
+                currentColumn += 1;
+            }
+        }
+    }
+    if(next != nullptr){
+        next->setPixmap(hamster.scaled(1050/gridLayout->columnCount(), 950/gridLayout->columnCount(), Qt::IgnoreAspectRatio));
+        current->setPixmap(pass);
+    }
+    if(currentRow == 2*size - 1 && currentColumn == 2*size){
+        QMessageBox::information(this, tr("You won!"),
+                                 tr("Congratulations! You won!!!"));
+        close();
+    }
+
 }

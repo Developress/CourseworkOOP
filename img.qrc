@@ -7,5 +7,7 @@
         <file>img/background_soil.jpg</file>
         <file>img/enter.png</file>
         <file>img/maze.png</file>
+        <file>img/hamster.png</file>
+        <file>img/cheese.png</file>
     </qresource>
 </RCC>

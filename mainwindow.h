@@ -19,6 +19,7 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void keyPressEvent(QKeyEvent *event);
 private slots:
     void onButtonClick();
     void themeSelected();
@@ -48,6 +49,8 @@ private:
     QPushButton *difficulties[COUNT];
     int selectedDifficulty;
     Maze maze;
+    int currentRow;
+    int currentColumn;
     void chooseTheme();
     void chooseDifficulty();
 };
