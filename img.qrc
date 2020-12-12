@@ -1,11 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>img/pass.png</file>
-        <file>img/grass_wall.jpg</file>
-        <file>img/brick_wall.jpg</file>
-        <file>img/stone_wall.jpg</file>
-        <file>img/background_soil.jpg</file>
-        <file>img/enter.png</file>
         <file>img/maze.png</file>
         <file>img/hamster.png</file>
         <file>img/cheese.png</file>

@@ -7,10 +7,10 @@
 
 class Cell
 {
+// The class for a maze cell
 public:
     enum {NEIGHBOURS_COUNT=4};
-    // 0 - top neighbour, 1 - right neighbour, 2 - bottom neighbour, 3 - left neighbour
-    enum {TOP, RIGHT, BOTTOM, LEFT};
+    enum {TOP, RIGHT, BOTTOM, LEFT}; // 0 - top neighbour, 1 - right neighbour, 2 - bottom neighbour, 3 - left neighbour
     Cell();
     bool isVisited() const;
     void setVisited(bool value);
@@ -21,10 +21,9 @@ public:
     std::pair<int, Cell *> getRandomUnvisitedNeighbour();
     std::pair<int, Cell*> getRandomTopOrLeftNeighbour();
 private:
-    std::vector<Cell*> neighbours;
-    std::vector<bool> walls;
-    bool visited;
-    std::vector<std::pair<int, Cell *> > getUnvisitedNeighbours();
+    std::vector<Cell*> neighbours; // The vector of neighbours of the cell
+    std::vector<bool> walls; // The vector of the walls of the cell
+    bool visited; // The bool value, which indicates whether the cell is visited (used for depth first search algorithm)
 };
 
 #endif // CELL_H
