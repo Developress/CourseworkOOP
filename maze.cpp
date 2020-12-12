@@ -156,17 +156,20 @@ void Maze::depthFirstSearch(){
     while (visitedCells < cellsToVisit){
         // if the current cell has unvisited neighbours, then choose the random unvisited neighbour, remove the walls,
         // push the current cell to the stack, mark the neighbour cell as current and visited and increase the amount of visited cells
-        if(current->hasUnvisitedNeighbours()){
+        try {
+            current->hasUnvisitedNeighbours();
             std::pair<int, Cell*> newCell = current->getRandomUnvisitedNeighbour();
             current->removeWall(newCell);
             cellsStack.push(current);
             current = newCell.second;
             visitedCells += 1;
             current->setVisited(true);
-        } else {
+        }  catch (NoUnvisitedNeighboursException& e) {
             // if the current cell has no unvisited neighbours, then mark it as current and pop it from the stack
             current = cellsStack.top();
             cellsStack.pop();
+        } catch (NoNeighbourCellException& e){
+            continue;
         }
     }
 }
@@ -178,11 +181,13 @@ void Maze::binaryTree(){
             // for every cell of the grid, choose the top or left neighbour, if no such neighbour exists, then go to next cell,
             // else remove the wall between the current cell and the chosen neighbour
             Cell *current = &cells[i][j];
-            if(current->getRandomTopOrLeftNeighbour().second == nullptr){
-                continue;
-            } else {
+            try {
                 std::pair<int, Cell*> newCell = current->getRandomTopOrLeftNeighbour();
                 current->removeWall(newCell);
+            }  catch (NoTopOrLeftNeighbourException& e) {
+                continue;
+            } catch (NoNeighbourCellException& e) {
+                continue;
             }
         }
     }

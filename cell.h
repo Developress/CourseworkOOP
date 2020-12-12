@@ -5,6 +5,10 @@
 #include <cstdlib>
 #include <ctime>
 
+#include "nounvisitedneighboursexception.h"
+#include "notoporleftneighbourexception.h"
+#include "noneighbourcellexception.h"
+
 class Cell
 {
 // The class for a maze cell

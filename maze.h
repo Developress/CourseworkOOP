@@ -3,9 +3,11 @@
 
 #include <vector>
 #include <stack>
-#include "cell.h"
 #include <cstdlib>
 #include <ctime>
+
+#include "cell.h"
+#include "nounvisitedneighboursexception.h"
 
 class Maze
 {

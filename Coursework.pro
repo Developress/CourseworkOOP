@@ -12,12 +12,18 @@ SOURCES += \
     cell.cpp \
     main.cpp \
     mainwindow.cpp \
-    maze.cpp
+    maze.cpp \
+    noneighbourcellexception.cpp \
+    notoporleftneighbourexception.cpp \
+    nounvisitedneighboursexception.cpp
 
 HEADERS += \
     cell.h \
     mainwindow.h \
-    maze.h
+    maze.h \
+    noneighbourcellexception.h \
+    notoporleftneighbourexception.h \
+    nounvisitedneighboursexception.h
 
 FORMS += \
     mainwindow.ui
