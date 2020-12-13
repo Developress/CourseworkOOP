@@ -1,11 +1,11 @@
 #include "nounvisitedneighboursexception.h"
 
-NoUnvisitedNeighboursException::NoUnvisitedNeighboursException()
+NoUnvisitedNeighboursException::NoUnvisitedNeighboursException(long long cellAddress)
 {
-
+    message = "No unvisited neighbours for cell " + std::to_string(cellAddress);
 }
 
 const char *NoUnvisitedNeighboursException::what() const noexcept
 {
-    return "No neighbours for given cell";
+    return message.c_str();
 }

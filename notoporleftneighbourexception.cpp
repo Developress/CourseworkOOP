@@ -1,11 +1,11 @@
 #include "notoporleftneighbourexception.h"
 
-NoTopOrLeftNeighbourException::NoTopOrLeftNeighbourException()
+NoTopOrLeftNeighbourException::NoTopOrLeftNeighbourException(long long cellAddress)
 {
-
+    message = "No top or left neighbour for cell " + std::to_string(cellAddress);
 }
 
 const char *NoTopOrLeftNeighbourException::what() const noexcept
 {
-    return "No top or left neighbour";
+    return message.c_str();
 }

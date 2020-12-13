@@ -168,8 +168,7 @@ void Maze::depthFirstSearch(){
             // if the current cell has no unvisited neighbours, then mark it as current and pop it from the stack
             current = cellsStack.top();
             cellsStack.pop();
-        } catch (NoNeighbourCellException& e){
-            continue;
+            qDebug(e.what());
         }
     }
 }
@@ -185,8 +184,7 @@ void Maze::binaryTree(){
                 std::pair<int, Cell*> newCell = current->getRandomTopOrLeftNeighbour();
                 current->removeWall(newCell);
             }  catch (NoTopOrLeftNeighbourException& e) {
-                continue;
-            } catch (NoNeighbourCellException& e) {
+                qDebug(e.what());
                 continue;
             }
         }

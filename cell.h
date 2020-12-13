@@ -7,7 +7,6 @@
 
 #include "nounvisitedneighboursexception.h"
 #include "notoporleftneighbourexception.h"
-#include "noneighbourcellexception.h"
 
 class Cell
 {

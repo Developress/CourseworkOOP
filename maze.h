@@ -5,9 +5,9 @@
 #include <stack>
 #include <cstdlib>
 #include <ctime>
+#include <qDebug>
 
 #include "cell.h"
-#include "nounvisitedneighboursexception.h"
 
 class Maze
 {

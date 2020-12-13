@@ -13,7 +13,6 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     maze.cpp \
-    noneighbourcellexception.cpp \
     notoporleftneighbourexception.cpp \
     nounvisitedneighboursexception.cpp
 
@@ -21,7 +20,6 @@ HEADERS += \
     cell.h \
     mainwindow.h \
     maze.h \
-    noneighbourcellexception.h \
     notoporleftneighbourexception.h \
     nounvisitedneighboursexception.h
 

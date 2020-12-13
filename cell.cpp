@@ -35,7 +35,7 @@ bool Cell::hasUnvisitedNeighbours(){
             return true;
         }
     }
-    throw NoUnvisitedNeighboursException();
+    throw NoUnvisitedNeighboursException(reinterpret_cast<long long>(this));
 }
 
 void Cell::setNeighbours(std::vector<Cell*> _neighbours){
@@ -74,10 +74,7 @@ void Cell::removeWall(std::pair<int, Cell*> neighbour) {
     // If the neighbour cell is defined, then break the wall from it to the current cell
     if(neighbour.second != nullptr){
         (neighbour.second->walls)[wallToBreakFromNeighbour] = false;
-    } else {
-        throw NoNeighbourCellException();
     }
-
 }
 
 std::vector<bool> Cell::getWalls(){
@@ -102,7 +99,7 @@ std::pair<int, Cell*> Cell::getRandomUnvisitedNeighbour(){
         int index = std::rand() % unvisitedNeighbours.size();
         return unvisitedNeighbours[index];
     } else {
-        throw NoUnvisitedNeighboursException();
+        throw NoUnvisitedNeighboursException(reinterpret_cast<long long>(this));
     }
 }
 
@@ -127,6 +124,6 @@ std::pair<int, Cell*> Cell::getRandomTopOrLeftNeighbour(){
         int index = std::rand() % neededNeighbours.size();
         return neededNeighbours[index];
     } else {
-        throw NoTopOrLeftNeighbourException();
+        throw NoTopOrLeftNeighbourException(reinterpret_cast<long long>(this));
     }
 }
